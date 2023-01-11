@@ -32,6 +32,12 @@ public class RedBlackTree extends BaseBinaryTree implements BinarySearchTree<Rec
         return null;
     }
 
+    public List<Record> getTreeAsList(){
+        List<Record> records = new ArrayList<>();
+        inOrderTraversal(root, records);
+        return records;
+    }
+
     public Record searchRecordByKey(String searchKey){
         Node found = null;
         return (found = searchNodeByKey(searchKey)) == null ? null : found.data;

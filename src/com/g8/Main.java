@@ -22,6 +22,7 @@ public class Main {
         memTable.insertRecord(mobbyDickRecord3);
         memTable.deleteRecordByKey("matrix");
         System.out.println("1 " + memTable.searchByKey("mobbyDick"));
+        memTable.writeDisk();
         memTable.print();
 
     }

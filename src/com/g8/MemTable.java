@@ -6,6 +6,7 @@ import com.g8.model.Record;
 public class MemTable {
     private RedBlackTree memTree;
     private int size  = 0;
+    private static final int MAX_SIZE = 12;
     public  MemTable(){
         memTree = new RedBlackTree();
     }
@@ -13,7 +14,7 @@ public class MemTable {
     public void insertRecord(Record record){
         memTree.insertNode(record);
         size ++;
-        if(size == 12){
+        if(size == MAX_SIZE){
             writeDisk();
         }
     }
@@ -40,7 +41,7 @@ public class MemTable {
 
     }
 
-    private void writeDisk(){
-
+    public void writeDisk(){
+        memTree.getTreeAsList().forEach(record -> System.out.println(record.getKey()));
     }
 }
