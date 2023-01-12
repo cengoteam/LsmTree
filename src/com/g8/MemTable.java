@@ -14,6 +14,7 @@ public class MemTable {
     private int size  = 0;
     private static final int MAX_SIZE = 12;
     public  MemTable(TableList ssTables){
+        
         this.ssTables = ssTables;
         memTree = new RedBlackTree();
     }

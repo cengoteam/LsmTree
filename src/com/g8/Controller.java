@@ -13,7 +13,16 @@ public class Controller {
 	}
 
 	public void run(){
-		
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("[1] Write a query");
+		System.out.println("[2] Write a script path");
+		System.out.println("[e] Exit");
+		String choice = scanner.nextLine();
+		if(choice.equals("1")){
+			getQuery();
+		} else if (choice.equals("2")) {
+			readScript();
+		}
 	}
 	public void getQuery() {
 		Scanner scanner = new Scanner(System.in);
@@ -29,21 +38,23 @@ public class Controller {
 	}
 
 	public void readScript() {
-		File file = new File("./script.txt");
+		System.out.println("Please write script file name with .txt extension:");
+		Scanner scanner = new Scanner(System.in);
+		String fileName = scanner.nextLine();
+		File file = new File("./"+ fileName);
 
 		try {
-			Scanner scanner = new Scanner(file);
+			scanner = new Scanner(file);
 
 			//now read the file line by line...
-			int lineNum = 0;
 			while (scanner.hasNextLine()) {
 				String line = scanner.nextLine();
 				parser.parser(line);
 			}
 		} catch(FileNotFoundException e) {
-			//handle this
+			System.out.println("File not found");
+			System.out.println("Exception: " + e.getMessage());
+			System.exit(-1);
 		}
 	}
-
-
 }
