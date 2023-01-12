@@ -59,7 +59,6 @@ public class RedBlackTree extends BaseBinaryTree implements BinarySearchTree<Rec
                 return null;
             }
             getSmallerNodes(root,endNode,results);
-            results.add(endNode.data);
         }
         else{
             Node startNode = searchNodeByKey(start);
@@ -67,7 +66,6 @@ public class RedBlackTree extends BaseBinaryTree implements BinarySearchTree<Rec
                 return null;
             }
             getLargerNodes(root, startNode, results);
-            results.add(startNode.data);
         }
         return results;
 
@@ -384,7 +382,7 @@ public class RedBlackTree extends BaseBinaryTree implements BinarySearchTree<Rec
     private void getNodesBetween(Node root, Node lower, Node upper, List<Record> res) {
         if (root == null) return;
         if(root.data.compareByKey(lower.data)> 0) getNodesBetween(root.left, lower, upper, res);
-        if(root.data.compareByKey(lower.data) >= 0  && root.data.compareByKey(upper.data) <= 0) res.add(root.data);
+        if(root.data.compareByKey(lower.data) > 0  && root.data.compareByKey(upper.data) < 0) res.add(root.data);
         if(root.data.compareByKey(upper.data) < 0) getNodesBetween(root.right, lower, upper, res);
     }
 

@@ -20,6 +20,8 @@ public class QueryExecuter {
 
     }
 
+
+
     public void upsertRecord(Record record){
         memTable.insertRecord(record);
 
@@ -40,7 +42,7 @@ public class QueryExecuter {
         List<Record> memTableResults = memTable.searchByRange(lowKey,highKey);
         List<Record> records = new ArrayList<>(memTableResults);
         // now look ss tables
-        records  = ssTables.searchByRange(lowKey, highKey);
+        records.addAll(ssTables.searchByRange(lowKey, highKey));
         return records;
 
 

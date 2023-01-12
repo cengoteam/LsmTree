@@ -59,7 +59,7 @@ public class MovieRecord  implements Record{
     @Override
     public String toString() {
         return "MovieRecord{" +
-                "key='" + key + '\'' +
+                "key=" + key +
                 ", value=" + value +
                 '}';
     }

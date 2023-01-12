@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Set;
 
 public class TableList {
-    private List<SSTable> levelOneTables;
-    private SSTable mainSegment;
+    private List<SSTable> levelOneTables = new ArrayList<>();
+    private SSTable mainSegment = null;
     public TableList(){
 
     }
@@ -43,11 +43,14 @@ public class TableList {
                 uniqueResults.add(new MovieRecord(line));
             });
         }
-        indexRange = mainSegment.findByRange(startKey, endKey);
-        List<String> lineResultsMain = FileSeeker.returnRangeData(indexRange.getFileName(), indexRange.getStartOffset(), indexRange.getEndOffset(), startKey, endKey);
-        lineResultsMain.forEach(line ->{
-            uniqueResults.add(new MovieRecord(line));
-        });
+        if(mainSegment!=null){
+            indexRange = mainSegment.findByRange(startKey, endKey);
+            List<String> lineResultsMain = FileSeeker.returnRangeData(indexRange.getFileName(), indexRange.getStartOffset(), indexRange.getEndOffset(), startKey, endKey);
+            lineResultsMain.forEach(line ->{
+                uniqueResults.add(new MovieRecord(line));
+            });
+        }
+
         List<Record> results = new ArrayList<>(uniqueResults);
         return results;
     }

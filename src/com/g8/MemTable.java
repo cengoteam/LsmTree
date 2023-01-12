@@ -3,6 +3,7 @@ package com.g8;
 import com.g8.model.MovieRecord;
 import com.g8.rebBlackTree.RedBlackTree;
 import com.g8.model.Record;
+import com.g8.ssTable.FileSeeker;
 
 import java.util.List;
 
@@ -48,6 +49,7 @@ public class MemTable {
     }
 
     public void writeDisk(){
-        memTree.getTreeAsList().forEach(record -> System.out.println(record.getKey()));
+
+        FileSeeker.initSSTable(memTree.getTreeAsList(), "./test.csv");
     }
 }
