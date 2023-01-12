@@ -11,8 +11,14 @@ public class SSTable {
     private String fileName;
     private List<IndexRecord> index;
 
+    public SSTable(String fileName, List<IndexRecord> index) {
+        this.fileName = fileName;
+        this.index = index;
+    }
+
     public ResultOfIndexSearch findByRange(String start, String end){
         ResultOfIndexSearch res = new ResultOfIndexSearch();
+
         int startOffset = findFirstOffset(start);
         int endOffset = findLastOffset(end);
         if(endOffset == -1){
@@ -45,7 +51,7 @@ public class SSTable {
                 result.setFileName(this.fileName);
                 result.setStartOffset(currentRecord.getOffset());
                 result.setEndOffset(currentRecord.getOffset());
-                break;
+                return result;
             }
 
             // comparison result is smaller than 0 which means we need to look next index record see if search key is in between

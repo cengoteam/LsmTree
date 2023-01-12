@@ -18,16 +18,16 @@ public class FileSeeker {
         compactTwoFiles(f3, f2, "./tmp_segment.csv");
         new File(f3).delete();
         new File(f2).delete();
-        if (new File("./segmentL1S.csv").exists()) {
+        if (new File("./L1S.csv").exists()) {
             compactTwoFiles("./tmp_segment.csv", f1, "./tmp_segment2.csv");
             new File("./tmp_segment.csv").delete();
             new File(f1).delete();
-            compactTwoFiles("./tmp_segment2.csv", "./segmentL1S.csv", "./tmp_segment3.csv");
+            compactTwoFiles("./tmp_segment2.csv", "./L1S.csv", "./tmp_segment3.csv");
             new File("./tmp_segment2.csv").delete();
-            new File("./segmentL1S.csv").delete();
-            new File("./tmp_segment3.csv").renameTo(new File("./segmentL1S.csv"));
+            new File("./L1S.csv").delete();
+            new File("./tmp_segment3.csv").renameTo(new File("./L1S.csv"));
         }else {
-            compactTwoFiles("./tmp_segment.csv", f1, "./segmentL1S.csv");
+            compactTwoFiles("./tmp_segment.csv", f1, "./L1S.csv");
             new File("./tmp_segment.csv").delete();
             new File(f1).delete();
         }
@@ -221,7 +221,7 @@ public class FileSeeker {
                 String value = line.split(":")[1];
                 String keyStr = parseStringByte(key);
                 int valueInt = parseIntegerByte(value);
-                if (keyStr.compareToIgnoreCase(keyStart) >= 0 && keyStr.compareToIgnoreCase(keyEnd) <= 0){
+                if (keyStr.compareTo(keyStart) > 0 && keyStr.compareTo(keyEnd) < 0){
                     list.add(keyStr+":"+valueInt);
                 }
             }

@@ -4,14 +4,17 @@ import com.g8.model.MovieRecord;
 import com.g8.rebBlackTree.RedBlackTree;
 import com.g8.model.Record;
 import com.g8.ssTable.FileSeeker;
+import com.g8.ssTable.TableList;
 
 import java.util.List;
 
 public class MemTable {
     private RedBlackTree memTree;
+    private TableList ssTables;
     private int size  = 0;
     private static final int MAX_SIZE = 12;
-    public  MemTable(){
+    public  MemTable(TableList ssTables){
+        this.ssTables = ssTables;
         memTree = new RedBlackTree();
     }
 
@@ -29,6 +32,7 @@ public class MemTable {
     }
 
     public List<Record> searchByRange(String startKey, String endKey){
+
         return memTree.searchByKeyRange(startKey,endKey);
     }
     public void deleteRecordByKey(String key){
@@ -49,7 +53,11 @@ public class MemTable {
     }
 
     public void writeDisk(){
-
-        FileSeeker.initSSTable(memTree.getTreeAsList(), "./test.csv");
+        int nextSegmentNumber = ssTables.getNextSegmentNumber();
+        String fileName = "./L0S" + nextSegmentNumber + ".csv";
+        FileSeeker.initSSTable(memTree.getTreeAsList(), fileName);
+        ssTables.addSegmentFile(fileName);
+        memTree = new RedBlackTree();
+        size = 0;
     }
 }

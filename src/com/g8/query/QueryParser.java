@@ -78,18 +78,23 @@ public class QueryParser {
                 Condition conditionOne =  selectCommand.getConditions().get(0);
                 Condition conditionTwo = selectCommand.getConditions().get(1);
                 if(conditionOne.getType().equalsIgnoreCase("K")){
-                    executer.searchByRange(conditionTwo.getKey(), conditionOne.getKey()).forEach(System.out::println);
+                    printRecords(executer.searchByRange(conditionTwo.getKey(), conditionOne.getKey()));
                 }else{
-                    executer.searchByRange(conditionOne.getKey(), conditionTwo.getKey()).forEach(System.out::println);
+                    printRecords(executer.searchByRange(conditionOne.getKey(), conditionTwo.getKey()));
                 }
             }else{
                 String conditionType = selectCommand.getConditions().get(0).getType();
                 if(conditionType.equalsIgnoreCase("E")){
-                    System.out.println("record found: " + executer.searchByKey(selectCommand.getConditions().get(0).getKey()));
+                    Record found = executer.searchByKey(selectCommand.getConditions().get(0).getKey());
+                    if(found.getValue() != -1) {
+                        System.out.println("record found: " + found);
+                    }else{
+                        System.out.println("record not found");
+                    }
                 }else if(conditionType.equalsIgnoreCase("K")){
-                    executer.searchByRange(null, selectCommand.getConditions().get(0).getKey()).forEach(System.out::println);
+                    printRecords(executer.searchByRange(null, selectCommand.getConditions().get(0).getKey()));
                 }else if(conditionType.equalsIgnoreCase("B")){
-                    executer.searchByRange(selectCommand.getConditions().get(0).getKey(),null).forEach(System.out::println);
+                    printRecords(executer.searchByRange(selectCommand.getConditions().get(0).getKey(),null));
                 }
             }
 
@@ -174,5 +179,11 @@ public class QueryParser {
 
     }
 
-
+    private void printRecords(List<Record> results){
+        for (Record found : results){
+            if(found.getValue() != -1) {
+                System.out.println("record found: " + found);
+            }
+        }
+    }
 }
