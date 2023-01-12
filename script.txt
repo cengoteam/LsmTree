@@ -1,5 +1,5 @@
-INSERT INTO table_name (movieName, views) VALUES ('a', 25000)
-INSERT INTO table_name (movieName, views) VALUES ('b', 25000)
+INSERT INTO table_name (movieName, views) VALUES ('matrix', 25000)
+INSERT INTO table_name (movieName, views) VALUES ('catch', 25000)
 INSERT INTO table_name (movieName, views) VALUES ('c', 25000)
 INSERT INTO table_name (movieName, views) VALUES ('d', 25000)
 INSERT INTO table_name (movieName, views) VALUES ('e', 25000)

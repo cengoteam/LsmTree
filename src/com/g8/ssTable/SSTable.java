@@ -80,7 +80,7 @@ public class SSTable {
             int comparisonResult = currentRecord.getKey().compareToIgnoreCase(key);
             if(comparisonResult>0){
                 // even the first index's key is greater than search key do no match
-                return index.get(index.size()).getOffset();
+                return index.get(index.size()-1).getOffset();
             }
             if(comparisonResult == 0){
                 // exact match

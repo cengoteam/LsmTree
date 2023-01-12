@@ -1,5 +1,6 @@
 package com.g8;
 
+import com.g8.logFile.LogFile;
 import com.g8.model.MovieRecord;
 import com.g8.rebBlackTree.RedBlackTree;
 import com.g8.model.Record;
@@ -14,14 +15,24 @@ public class MemTable {
     private int size  = 0;
     private static final int MAX_SIZE = 12;
     public  MemTable(TableList ssTables){
-        
         this.ssTables = ssTables;
         memTree = new RedBlackTree();
+        if (LogFile.isFileExist()){
+            for (Record record : LogFile.readFile()){
+                insertRecordFromLog(record);
+            }
+        }
+    }
+
+    private void insertRecordFromLog(Record record){
+        memTree.insertNode(record);
+        size ++;
     }
 
     public void insertRecord(Record record){
         memTree.insertNode(record);
         size ++;
+        LogFile.writeFile(record.toLog());
         if(size == MAX_SIZE){
             writeDisk();
         }
@@ -60,5 +71,6 @@ public class MemTable {
         ssTables.addSegmentFile(fileName);
         memTree = new RedBlackTree();
         size = 0;
+        LogFile.newFile();
     }
 }

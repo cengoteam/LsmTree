@@ -63,4 +63,8 @@ public class MovieRecord  implements Record{
                 ", value=" + value +
                 '}';
     }
+
+    public String toLog(){
+        return key+":"+value;
+    }
 }
