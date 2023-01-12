@@ -7,4 +7,5 @@ public interface Record {
     int getValue();
     void setValue(int value);
 
+    String toLog();
 }

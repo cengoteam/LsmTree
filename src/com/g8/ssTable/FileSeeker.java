@@ -1,6 +1,8 @@
 package com.g8.ssTable;
 
 import java.io.*;
+
+import com.g8.model.IndexRecord;
 import com.g8.model.Record;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,7 +13,27 @@ import java.io.RandomAccessFile;
 
 
 public class FileSeeker {
-    public static void compactAndMerge(String f1, String f2, String w) {
+
+    public static void compactAndMerge(String f1, String f2, String f3){
+        compactTwoFiles(f3, f2, "./tmp_segment.csv");
+        new File(f3).delete();
+        new File(f2).delete();
+        if (new File("./L1S.csv").exists()) {
+            compactTwoFiles("./tmp_segment.csv", f1, "./tmp_segment2.csv");
+            new File("./tmp_segment.csv").delete();
+            new File(f1).delete();
+            compactTwoFiles("./tmp_segment2.csv", "./L1S.csv", "./tmp_segment3.csv");
+            new File("./tmp_segment2.csv").delete();
+            new File("./L1S.csv").delete();
+            new File("./tmp_segment3.csv").renameTo(new File("./L1S.csv"));
+        }else {
+            compactTwoFiles("./tmp_segment.csv", f1, "./L1S.csv");
+            new File("./tmp_segment.csv").delete();
+            new File(f1).delete();
+        }
+    }
+
+    private static void compactTwoFiles(String f1, String f2, String w) {
 
         try {
             RandomAccessFile br1 = new RandomAccessFile(new File(f1), "r");
@@ -66,27 +88,23 @@ public class FileSeeker {
 
     }
 
-    public static HashMap<String, Integer> initSparseIndex(String fileName) {
-        try {
-            RandomAccessFile file = new RandomAccessFile(new File(fileName), "r");
+    public static List<IndexRecord> initSparseIndex(String fileName) throws IOException {
 
-            HashMap<String, Integer> sparseIndex = new HashMap<>();
-            int indexStart = Integer.valueOf(file.readLine().split(":")[1]);
-            int indexLength = Integer.valueOf(file.readLine().split(":")[1]);
-            for (int i = indexStart; i < indexLength; i += 38) {
-                String index = file.readLine();
-                sparseIndex.put(index.split(":")[0], Integer.valueOf(index.split(":")[1]));
-            }
+        RandomAccessFile file = new RandomAccessFile(new File(fileName), "r");
 
-            file.close();
-            return sparseIndex;
-
-        } catch (IOException e) {
-            System.out.println("File not found");
-            System.out.println("Exception: " + e.getMessage());
-            System.exit(-1);
+        List<IndexRecord> sparseIndex = new ArrayList<>();
+        int indexStart = Integer.valueOf(file.readLine().split(":")[1]);
+        int indexLength = Integer.valueOf(file.readLine().split(":")[1]);
+        for (int i = indexStart; i < indexLength; i += 38) {
+            String line = file.readLine();
+            String lineKey = parseStringByte(line.split(":")[0]);
+            Integer lineValue = parseIntegerByte(line.split(":")[1]);
+            IndexRecord record = new IndexRecord(lineKey, lineValue);
+            sparseIndex.add(record);
         }
-        return null;
+
+        file.close();
+        return sparseIndex;
     }
 
     public static void initSSTable(List<Record> memTable, String fileName) {
@@ -203,7 +221,7 @@ public class FileSeeker {
                 String value = line.split(":")[1];
                 String keyStr = parseStringByte(key);
                 int valueInt = parseIntegerByte(value);
-                if (keyStr.compareToIgnoreCase(keyStart) >= 0 && keyStr.compareToIgnoreCase(keyEnd) <= 0){
+                if (keyStr.compareTo(keyStart) > 0 && keyStr.compareTo(keyEnd) < 0){
                     list.add(keyStr+":"+valueInt);
                 }
             }

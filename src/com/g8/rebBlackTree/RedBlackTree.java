@@ -44,10 +44,39 @@ public class RedBlackTree extends BaseBinaryTree implements BinarySearchTree<Rec
     }
 
     public List<Record> searchByKeyRange(String start, String end){
+        var recordList = getTreeAsList();
         List<Record> results = new ArrayList<>();
+        int startIndex = 0;
+        int endIndex = recordList.size() - 1;
+        boolean startFound = false;
+        boolean endFound = false;
+        if(end != null){
+            for (int i = recordList.size() - 1;  i >= 0 ; i--) {
+                Record currentRecord = recordList.get(i);
+                if(currentRecord.getKey().compareTo(end) < 0 ){
+                    endIndex = i;
+                    endFound = true;
+                    break;
+                }
+            }
+        }
+        if(start != null){
+            for (int i = 0;  i < recordList.size() ; i++) {
+                Record currentRecord = recordList.get(i);
+                if(currentRecord.getKey().compareTo(start) > 0 ){
+                    startIndex = i;
+                    startFound = true;
+                    break;
+                }
 
-
-        if(start != null && end != null){
+            }
+        }
+        if((start != null && !startFound) || (end!=null && !endFound)){
+            return results;
+        }
+        results = recordList.subList(startIndex,endIndex+1);
+        /*
+             if(start != null && end != null){
             Node startNode = searchNodeByKey(start);
             Node endNode = searchNodeByKey(end);
             getNodesBetween(root,startNode, endNode, results);
@@ -67,6 +96,8 @@ public class RedBlackTree extends BaseBinaryTree implements BinarySearchTree<Rec
             }
             getLargerNodes(root, startNode, results);
         }
+        */
+
         return results;
 
     }

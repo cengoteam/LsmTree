@@ -1,6 +1,11 @@
 package com.g8.model;
 
 public class IndexRecord {
+    public IndexRecord(String key, int offset) {
+        this.key = key;
+        this.offset = offset;
+    }
+
     private String key;
     private int offset;
 

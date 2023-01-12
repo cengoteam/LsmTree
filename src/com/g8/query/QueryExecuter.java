@@ -5,9 +5,7 @@ import com.g8.model.Record;
 import com.g8.model.ResultOfIndexSearch;
 import com.g8.ssTable.TableList;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class QueryExecuter {
 
@@ -40,10 +38,18 @@ public class QueryExecuter {
 
     public List<Record> searchByRange(String lowKey, String highKey){
         List<Record> memTableResults = memTable.searchByRange(lowKey,highKey);
-        List<Record> records = new ArrayList<>(memTableResults);
+        Set<Record> records = new HashSet<>();
+        if(memTableResults != null){
+            records.addAll(memTableResults);
+        }
+
         // now look ss tables
-        records.addAll(ssTables.searchByRange(lowKey, highKey));
-        return records;
+        List<Record> ssTableResults = ssTables.searchByRange(lowKey, highKey);
+        if(ssTableResults != null){
+            records.addAll(ssTableResults);
+        }
+
+        return records.size() == 0 ? new ArrayList<>() : new ArrayList<>(records);
 
 
     }
