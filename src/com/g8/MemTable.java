@@ -3,6 +3,9 @@ package com.g8;
 import com.g8.model.MovieRecord;
 import com.g8.rebBlackTree.RedBlackTree;
 import com.g8.model.Record;
+
+import java.util.List;
+
 public class MemTable {
     private RedBlackTree memTree;
     private int size  = 0;
@@ -24,6 +27,9 @@ public class MemTable {
         insertRecord(anotherRecord);
     }
 
+    public List<Record> searchByRange(String startKey, String endKey){
+        return memTree.searchByKeyRange(startKey,endKey);
+    }
     public void deleteRecordByKey(String key){
         Record recordToBeDeleted = new MovieRecord(key,-1);
         insertRecord(recordToBeDeleted);

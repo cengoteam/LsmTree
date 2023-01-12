@@ -6,4 +6,5 @@ public interface Record {
     void setKey(String key);
     int getValue();
     void setValue(int value);
+
 }

@@ -15,6 +15,12 @@ public class MovieRecord  implements Record{
         this.value = value;
     }
 
+    public MovieRecord(String input){
+        String[] inputs = input.split(":");
+        key = inputs[0];
+        value = Integer.parseInt(inputs[1]);
+    }
+
     public String getKey() {
         return key;
     }
@@ -42,7 +48,7 @@ public class MovieRecord  implements Record{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MovieRecord record = (MovieRecord) o;
-        return value == record.value && Objects.equals(key, record.key);
+        return Objects.equals(key, record.key);
     }
 
     @Override
